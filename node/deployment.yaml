@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-app-example
+  labels:
+    app: node-app-example
+    tags.datadoghq.com/env: dev
+    tags.datadoghq.com/service: node-app
+    tags.datadoghq.com/version: v0014
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-app-example
+      tags.datadoghq.com/env: dev
+      tags.datadoghq.com/service: node-app
+      tags.datadoghq.com/version: v0014
+  template:
+    metadata:
+      labels:
+        app: node-app-example
+        tags.datadoghq.com/env: dev
+        tags.datadoghq.com/service: node-app
+        tags.datadoghq.com/version: v0014
+    spec:
+      containers:
+      - name: node-app-example
+        image: mayconrr13/node-app-example:v0014
+        ports:
+        - containerPort: 5000
+        env:
+        env:
+          - name: DD_AGENT_HOST
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+          - name: DD_ENV
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.labels['tags.datadoghq.com/env']
+          - name: DD_VERSION
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.labels['tags.datadoghq.com/version']
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 15
+          timeoutSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 15
+          timeoutSeconds: 30
