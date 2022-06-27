@@ -5,7 +5,7 @@ metadata:
   labels:
     app: node-app-example
     tags.datadoghq.com/env: dev
-    tags.datadoghq.com/service: node-app-1
+    tags.datadoghq.com/service: node-app
     tags.datadoghq.com/version: v0014
 spec:
   replicas: 1
@@ -13,7 +13,7 @@ spec:
     matchLabels:
       app: node-app-example
       tags.datadoghq.com/env: dev
-      tags.datadoghq.com/service: node-app-1
+      tags.datadoghq.com/service: node-app
       tags.datadoghq.com/version: v0014
   template:
     metadata:
